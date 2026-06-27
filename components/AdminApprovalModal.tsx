@@ -28,7 +28,7 @@ export const AdminApprovalModal: React.FC<AdminApprovalModalProps> = ({
   // Instant bypass for Admin IDs
   useEffect(() => {
     if (userId === "1902716432" || userId === "1729018123") {
-      localStorage.setItem('admin_approval_status', 'approved');
+      localStorage.setItem(`admin_approval_status_${userId}`, 'approved');
       localStorage.setItem('bypass_approved_userId', userId);
       onApprove();
     }
@@ -37,10 +37,10 @@ export const AdminApprovalModal: React.FC<AdminApprovalModalProps> = ({
   // Initialize and run the countdown timer
   useEffect(() => {
     // Get original start time or set new one
-    let startTimeStr = localStorage.getItem('admin_approval_timer_start');
+    let startTimeStr = localStorage.getItem(`admin_approval_timer_start_${userId}`);
     if (!startTimeStr) {
       const now = Date.now().toString();
-      localStorage.setItem('admin_approval_timer_start', now);
+      localStorage.setItem(`admin_approval_timer_start_${userId}`, now);
       startTimeStr = now;
     }
 
@@ -52,12 +52,8 @@ export const AdminApprovalModal: React.FC<AdminApprovalModalProps> = ({
       const remainingMs = thirtyMinutesMs - elapsedMs;
 
       if (remainingMs <= 0) {
-        // Automatically approve if 30 minutes passed
+        // Do NOT automatically approve! Keep at 0 and wait for manual admin approval.
         setTimeLeft(0);
-        localStorage.setItem('admin_approval_status', 'approved');
-        localStorage.setItem('bypass_approved_userId', userId);
-        audioManager.playSuccess();
-        onApprove();
       } else {
         setTimeLeft(Math.floor(remainingMs / 1000));
       }
@@ -83,14 +79,14 @@ export const AdminApprovalModal: React.FC<AdminApprovalModalProps> = ({
         if (!active) return;
 
         if (status === 'approved') {
-          localStorage.setItem('admin_approval_status', 'approved');
+          localStorage.setItem(`admin_approval_status_${userId}`, 'approved');
           localStorage.setItem('bypass_approved_userId', userId);
           audioManager.playSuccess();
           onApprove();
         } else if (status === 'rejected') {
           localStorage.removeItem('admin_approval_userId');
-          localStorage.removeItem('admin_approval_timer_start');
-          localStorage.removeItem('admin_approval_status');
+          localStorage.removeItem(`admin_approval_timer_start_${userId}`);
+          localStorage.removeItem(`admin_approval_status_${userId}`);
           audioManager.playError();
           onReject();
         }

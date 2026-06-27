@@ -58,6 +58,8 @@ const SettingsView: React.FC<SettingsViewProps> = ({ onComplete, lang, t, platfo
             const status = await res.json();
             if (status === 'approved') {
               setIsApprovedOnServer(true);
+              localStorage.setItem(`admin_approval_status_${trimmedId}`, 'approved');
+              localStorage.setItem('bypass_approved_userId', trimmedId);
               return;
             }
           }
@@ -159,7 +161,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ onComplete, lang, t, platfo
         setTimeout(() => {
           setIsSubmitting(false);
           localStorage.setItem('bypass_approved_userId', trimmedId);
-          localStorage.setItem('admin_approval_status', 'approved');
+          localStorage.setItem(`admin_approval_status_${trimmedId}`, 'approved');
           onComplete(trimmedId, true);
         }, 350);
       }, 1200);
@@ -190,7 +192,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ onComplete, lang, t, platfo
           setTimeout(() => {
             setIsSubmitting(false);
             localStorage.setItem('bypass_approved_userId', trimmedId);
-            localStorage.setItem('admin_approval_status', 'approved');
+            localStorage.setItem(`admin_approval_status_${trimmedId}`, 'approved');
             onComplete(trimmedId, true);
           }, 350);
         }, 1200);
@@ -271,12 +273,12 @@ const SettingsView: React.FC<SettingsViewProps> = ({ onComplete, lang, t, platfo
         localStorage.setItem('admin_approval_userId', trimmedId);
         
         // Only set a new timer start time if it doesn't already exist
-        const existingTimerStart = localStorage.getItem('admin_approval_timer_start');
+        const existingTimerStart = localStorage.getItem(`admin_approval_timer_start_${trimmedId}`);
         if (!existingTimerStart) {
-          localStorage.setItem('admin_approval_timer_start', startTime.toString());
+          localStorage.setItem(`admin_approval_timer_start_${trimmedId}`, startTime.toString());
         }
         
-        localStorage.setItem('admin_approval_status', 'pending');
+        localStorage.setItem(`admin_approval_status_${trimmedId}`, 'pending');
 
         setIsSubmitting(false);
         onComplete(trimmedId);
@@ -336,7 +338,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ onComplete, lang, t, platfo
         </div>
       </div>
 
-      {localStorage.getItem('admin_approval_status') === 'pending' && (
+      {localStorage.getItem('admin_approval_userId') && localStorage.getItem(`admin_approval_status_${localStorage.getItem('admin_approval_userId')}`) === 'pending' && (
         <div 
           onClick={() => {
             audioManager.playClick();

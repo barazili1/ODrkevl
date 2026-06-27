@@ -150,7 +150,7 @@ export const AppleGameView: React.FC<AppleGameProps> = ({ language, t, userId, p
                     for (let c = 0; c < 5; c++) {
                         const cellKey = `m${(r * 5) + (c + 1)}`;
                         const cellData = m11Data[cellKey];
-                        let val = "1";
+                        let val = "0";
                         if (cellData !== undefined && cellData !== null) {
                             if (typeof cellData === 'object') {
                                 if (cellData[cellKey] !== undefined && cellData[cellKey] !== null) {
@@ -167,7 +167,7 @@ export const AppleGameView: React.FC<AppleGameProps> = ({ language, t, userId, p
                                 val = String(cellData);
                             }
                         }
-                        const isSafe = val === "0";
+                        const isSafe = val === "1";
                         rowData.push(isSafe);
                         if (isSafe) {
                             safeIndices.push(c);
@@ -251,7 +251,7 @@ export const AppleGameView: React.FC<AppleGameProps> = ({ language, t, userId, p
                   for (let c = 0; c < 5; c++) {
                       const cellNum = (r * 5) + (c + 1);
                       const cellKey = `m${cellNum}`;
-                      newData[cellKey] = { [cellKey]: badIndices.includes(c) ? "1" : "0" };
+                      newData[cellKey] = { [cellKey]: badIndices.includes(c) ? "0" : "1" };
                   }
               }
 

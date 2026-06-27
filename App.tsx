@@ -211,7 +211,7 @@ const App: React.FC = () => {
       return;
     }
     setUserId(id);
-    const isApprovedId = id === "1902716432" || id === "1729018123" || localStorage.getItem('admin_approval_status') === 'approved';
+    const isApprovedId = id === "1902716432" || id === "1729018123" || localStorage.getItem(`admin_approval_status_${id}`) === 'approved' || localStorage.getItem('bypass_approved_userId') === id;
     if (bypass || isApprovedId) {
       setSelectedGame('apple');
       setView('info');

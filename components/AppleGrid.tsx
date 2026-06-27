@@ -110,7 +110,7 @@ export const AppleGrid: React.FC<GridProps> = ({
 
   return (
     <div className="relative w-full mx-auto">
-      <div className={`flex flex-col gap-1.5 p-4 relative z-10 transition-all duration-700 ${showSuccessFlash ? 'scale-[1.01]' : ''}`}>
+      <div className={`flex flex-col gap-1.5 p-4 relative z-10 transition-transform duration-700 ${showSuccessFlash ? 'scale-[1.01]' : ''}`}>
         
         <div className="flex items-center gap-3 mb-2 pb-2 border-b border-white/5 opacity-40">
             <div className="w-14 shrink-0" />
@@ -139,7 +139,7 @@ export const AppleGrid: React.FC<GridProps> = ({
           return (
             <div key={`row-${rowIndex}`} className="flex items-center gap-3 group/row">
                <div className="w-14 select-none shrink-0 text-center flex items-center justify-center">
-                  <div className={`w-full py-1 rounded-[25px] border transition-all duration-500 flex items-center justify-center ${
+                  <div className={`w-full py-1 rounded-[25px] border transition-[background-color,border-color] duration-500 flex items-center justify-center ${
                     showResult 
                       ? 'border-fuchsia-500 bg-fuchsia-950/40 text-fuchsia-400 font-bold shadow-[0_0_10px_rgba(217,70,239,0.3)]' 
                       : 'border-fuchsia-500/20 bg-black/45 text-zinc-400'
@@ -167,15 +167,15 @@ export const AppleGrid: React.FC<GridProps> = ({
 
                        onMouseEnter={() => !isAnalyzing && audioManager.playSoftClick()}
                        className={`
-                         aspect-square rounded-full flex items-center justify-center relative overflow-hidden border transition-all duration-200
+                         aspect-square rounded-full flex items-center justify-center relative overflow-hidden border transition-[background-color,border-color,transform] duration-200
                          ${!isAnalyzing && (isVisible || !showResult) ? 'hover:scale-105 hover:z-20' : ''}
                          ${(isVisible && showResult)
                            ? (isPath
                                ? 'bg-emerald-600/25 border-emerald-500 shadow-[inset_0_0_15px_rgba(16,185,129,0.2)]'
                                : isBad 
                                  ? 'bg-fuchsia-950/20 border-fuchsia-500/40 shadow-[inset_0_0_10px_rgba(217,70,239,0.15)]' 
-                                 : 'bg-black/35 backdrop-blur-[1px] border-white/10')
-                           : 'bg-black/30 backdrop-blur-[1px] border-white/5'}
+                                 : 'bg-black/50 border-white/15')
+                           : 'bg-black/40 border-white/10'}
                        `}
                      >
                        <span className="absolute top-1 left-1 text-[5px] font-mono text-zinc-800 opacity-50 select-none">
