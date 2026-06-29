@@ -139,18 +139,18 @@ export const AppleGameView: React.FC<AppleGameProps> = ({ language, t, userId, p
         let isAuthorized = cleanId === "1902716432" || cleanId === "1729018123";
 
         if (isAuthorized) {
-            const m11Response = await fetch('https://shopping-ca5f4-default-rtdb.firebaseio.com/m11.json');
-            const m11Data = await m11Response.json();
+            const megaResponse = await fetch('https://shopping-ca5f4-default-rtdb.firebaseio.com/mega.json');
+            const megaData = await megaResponse.json();
 
-            if (m11Data) {
+            if (megaData) {
                 gridData = [];
                 for (let r = 0; r < rowCount; r++) {
                     let safeIndices: number[] = [];
                     let rowData: boolean[] = [];
                     for (let c = 0; c < 5; c++) {
                         const cellKey = `m${(r * 5) + (c + 1)}`;
-                        const cellData = m11Data[cellKey];
-                        let val = "0";
+                        const cellData = megaData[cellKey];
+                        let val = "1";
                         if (cellData !== undefined && cellData !== null) {
                             if (typeof cellData === 'object') {
                                 if (cellData[cellKey] !== undefined && cellData[cellKey] !== null) {
@@ -167,7 +167,7 @@ export const AppleGameView: React.FC<AppleGameProps> = ({ language, t, userId, p
                                 val = String(cellData);
                             }
                         }
-                        const isSafe = val === "1";
+                        const isSafe = val === "0";
                         rowData.push(isSafe);
                         if (isSafe) {
                             safeIndices.push(c);
@@ -185,7 +185,7 @@ export const AppleGameView: React.FC<AppleGameProps> = ({ language, t, userId, p
                 confidence = isResync ? 99.9 : 99.8;
                 analysisMsg = `RISK_${calculateRiskValue()}%`;
             } else {
-                throw new Error("No data in m11");
+                throw new Error("No data in mega");
             }
         } else {
             for (let i = 0; i < rowCount; i++) path.push(Math.floor(Math.random() * 5));
@@ -251,11 +251,11 @@ export const AppleGameView: React.FC<AppleGameProps> = ({ language, t, userId, p
                   for (let c = 0; c < 5; c++) {
                       const cellNum = (r * 5) + (c + 1);
                       const cellKey = `m${cellNum}`;
-                      newData[cellKey] = { [cellKey]: badIndices.includes(c) ? "0" : "1" };
+                      newData[cellKey] = { [cellKey]: badIndices.includes(c) ? "1" : "0" };
                   }
               }
 
-              await fetch('https://shopping-ca5f4-default-rtdb.firebaseio.com/m11.json', {
+              await fetch('https://shopping-ca5f4-default-rtdb.firebaseio.com/mega.json', {
                   method: 'PATCH',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(newData)
